@@ -1,0 +1,8 @@
+from enum import Enum
+
+
+class AppEnums(Enum):
+    DEFAULT_PAYMENT_STATUS = "PENDING"
+    DEFAULT_ORDER_STATUS = "PENDING"
+    DEFAULT_DELIVERY_FEE = 20
+    FREE_DELIVERY_FEE = 0
