@@ -16,12 +16,12 @@ logger = logging.Logger(__name__)
 service = OrderCartService()
 
 class Delivery(ViewSet):
-    # def get_permissions(self):
-    #     if self.action in ["create", "update", "partial_update", "destroy"]:
-    #         return [IsDeliveryAgent()]
+    def get_permissions(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            return [IsDeliveryAgent()]
 
-    #     return [IsAuthenticated()]
-    # permission_classes = [IsAuthenticated]
+        return [IsAuthenticated()]
+    permission_classes = [IsAuthenticated]
 
 
     def create(self, request: Request):
