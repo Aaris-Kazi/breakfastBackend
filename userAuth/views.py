@@ -3,6 +3,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
 
 from userAuth.customToken import CustomTokenSerializer
+from utils.permissionClasses import IsCustomer
 from .userAuthSerializer import RegisterSerializer, LoginSerializer, AddressSerializer
 from .services import UserServices
 
@@ -58,7 +59,12 @@ class Register(ViewSet):
 
 class Addresses(ViewSet):
 
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    def get_permissions(self):
+        if self.action in ["create", "update", "list", "partial_update", "destroy"]:
+            return [IsCustomer()]
+    
+        return [IsAuthenticated()]
 
     def create(self, request: Request):
         try:
