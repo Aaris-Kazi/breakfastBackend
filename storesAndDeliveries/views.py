@@ -21,7 +21,7 @@ class Delivery(ViewSet):
             return [IsDeliveryAgent()]
 
         return [IsAuthenticated()]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
 
     def create(self, request: Request):
