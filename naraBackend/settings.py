@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 
+from constants.AppConstants import AppConstants
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -97,10 +99,10 @@ WSGI_APPLICATION = 'naraBackend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "deliveryApp",
-        'USER': "root",
-        'PASSWORD': "12345",
-        'HOST': "localhost",
+        'NAME': AppConstants.DB_NAME.value,
+        'USER': AppConstants.USERNAME.value,
+        'PASSWORD': AppConstants.PASSWORD.value,
+        'HOST': AppConstants.HOSTNAME.value,
         'PORT':3306, 
         'POOL_OPTIONS': {
             'POOL_SIZE': 50,
