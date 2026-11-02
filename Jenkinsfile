@@ -29,6 +29,7 @@ pipeline {
                 sh 'ls -la'
                 sh 'find . -name requirements.txt'
                 sh 'find . -name Dockerfile'
+                sh 'cp /home/warhero/.env .'
             }
         }
 
