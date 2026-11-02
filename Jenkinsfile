@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "aariskazi/breakfastBackend"
-        CONTAINER_NAME = "breakfastBackend"
+        IMAGE_NAME = "aariskazi/breakfas-backend"
+        CONTAINER_NAME = "breakfast-backend"
         PORT = "80"
         IMAGE_TAG = "v${BUILD_NUMBER}"
     }
