@@ -14,7 +14,7 @@ class Configurations:
     @staticmethod
     def get_configurations(name, default:str = None) -> str:
         if default is None:
-            return getenv(name)
+            return getenv(name, "")
         else:
             return getenv(name, default)
 
