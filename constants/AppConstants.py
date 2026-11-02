@@ -12,3 +12,4 @@ class AppConstants(Enum):
     POOL_SIZE = Configurations.get_configurations("POOL_SIZE")
     ACCESS_TOKEN_HOURS = Configurations.get_configurations("TOKEN_HOURS", 24)
     REFRESH_TOKEN_DAYS = Configurations.get_configurations("TOKEN_DAYS", 7)
+    SECRETS = Configurations.get_configurations("SECRETS")
