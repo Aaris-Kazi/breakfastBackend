@@ -6,7 +6,7 @@ from .AppEnums import AppEnums
 class AppConstants(Enum):
     DEFAULT_DELIVERY_FEE = Configurations.get_configurations("DEFAULT_DELIVERY_FEE", AppEnums.DEFAULT_DELIVERY_FEE)
     HOSTNAME = Configurations.get_configurations("HOST")
-    DB_NAME = Configurations.get_configurations("DATABASE")
+    DB_NAME = Configurations.get_configurations("DELIVERY_DATABASE")
     USERNAME = Configurations.get_configurations("USERNAME")
     PASSWORD = Configurations.get_configurations("PASSWORD")
     POOL_SIZE = Configurations.get_configurations("POOL_SIZE")
