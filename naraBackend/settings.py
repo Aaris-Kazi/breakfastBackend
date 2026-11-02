@@ -109,6 +109,9 @@ DATABASES = {
             'MAX_OVERFLOW': 50,
             'RECYCLE': 24 * 60 * 60
         },
+        "OPTIONS": {
+            "connect_timeout": 10,
+        },
         
     }
 }
