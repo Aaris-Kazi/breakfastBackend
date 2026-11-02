@@ -13,3 +13,4 @@ class AppConstants(Enum):
     ACCESS_TOKEN_HOURS = Configurations.get_configurations("TOKEN_HOURS", 24)
     REFRESH_TOKEN_DAYS = Configurations.get_configurations("TOKEN_DAYS", 7)
     SECRETS = Configurations.get_configurations("SECRETS", "thisisthesecret while building the application")
+    DEBUG = Configurations.get_configurations("DEBUGs", "N") == "Y"

@@ -80,7 +80,7 @@ pipeline {
                 sh '''
                 docker run -d \
                 --env-file /home/warhero/.env \
-                -p 8089:$PORT \
+                -p 8090:$PORT \
                 --name $CONTAINER_NAME \
                 $IMAGE_NAME:$IMAGE_TAG
                 '''
