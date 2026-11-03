@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 import logging
 # Create your views here.
 
-log = logging.Logger(__name__)
+log = logging.getLogger(__name__)
 
 services = UserServices()
 serializer_class = CustomTokenSerializer()

@@ -4,7 +4,7 @@ from .userAuthSerializer import AddressSerializer, AddressResponseSerializer
 import logging
 
 
-log = logging.Logger(__name__)
+log = logging.getLogger(__name__)
 class UserServices:
 
 
