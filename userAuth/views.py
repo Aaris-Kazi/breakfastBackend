@@ -9,9 +9,10 @@ from .services import UserServices
 
 # from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+import logging
 # Create your views here.
 
-
+log = logging.Logger(__name__)
 
 services = UserServices()
 serializer_class = CustomTokenSerializer()
@@ -54,6 +55,8 @@ class Register(ViewSet):
             
             return JsonResponse({"msg": serializer.error_messages}, 401)
         except Exception as e:
+            log.error(f"Creating register error due to {e.args[0]}")
+            
             return JsonResponse({"msg": str(e)}, status=500)
 
 
@@ -77,6 +80,7 @@ class Addresses(ViewSet):
                 return JsonResponse({"data": "address"}, status=201)
             return JsonResponse({"msg": "address"}, status=401)
         except Exception as e:
+            log.error(f"Creating address error due to {e.args[0]}")
             return JsonResponse({"msg": str(e)}, status=500)
 
     def retrieve(self, request: Request, pk: str):
@@ -95,4 +99,5 @@ class Addresses(ViewSet):
 
             return JsonResponse({"data": response})
         except Exception as e:
+            log.error(f"listing address error due to {e.args[0]}")
             return JsonResponse({"msg": str(e)})
