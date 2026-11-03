@@ -42,7 +42,9 @@ class Login(ViewSet):
             
             return JsonResponse({"msg": serializer.error_messages}, status=401)
         except Exception as e:
-                    return JsonResponse({"msg": str(e)}, status=500)
+            
+            log.error(f"Creating logging error due to {e.args[1]}")
+            return JsonResponse({"msg": e.args[1]}, status=500)
 
 
 class Register(ViewSet):
@@ -55,9 +57,9 @@ class Register(ViewSet):
             
             return JsonResponse({"msg": serializer.error_messages}, 401)
         except Exception as e:
-            log.error(f"Creating register error due to {e.args[0]}")
+            log.error(f"Creating register error due to {e.args[1]}")
             
-            return JsonResponse({"msg": str(e)}, status=500)
+            return JsonResponse({"msg": e.args[1]}, status=500)
 
 
 class Addresses(ViewSet):
@@ -80,8 +82,8 @@ class Addresses(ViewSet):
                 return JsonResponse({"data": "address"}, status=201)
             return JsonResponse({"msg": "address"}, status=401)
         except Exception as e:
-            log.error(f"Creating address error due to {e.args[0]}")
-            return JsonResponse({"msg": str(e)}, status=500)
+            log.error(f"Creating address error due to {e.args[1]}")
+            return JsonResponse({"msg": e.args[1]}, status=500)
 
     def retrieve(self, request: Request, pk: str):
 
@@ -99,5 +101,5 @@ class Addresses(ViewSet):
 
             return JsonResponse({"data": response})
         except Exception as e:
-            log.error(f"listing address error due to {e.args[0]}")
-            return JsonResponse({"msg": str(e)})
+            log.error(f"listing address error due to {e.args[1]}")
+            return JsonResponse({"msg": e.args[1]})
