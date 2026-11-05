@@ -102,7 +102,8 @@ class CartViewset(ViewSet):
         try:
             serializer = CartUpdateSerializer(data=request.data)
             if serializer.is_valid():
-                service.updateCart(request.user, pk, serializer.validated_data)
+                service.updateCart(request.user.username, int(pk), serializer.validated_data)
+                service.notify_cart_updated(request.user.id, pk)
                 return JsonResponse({"status": "success"})
             logger.error(f"serializer update error due to {serializer.error_messages} ")
             return JsonResponse({"msg": "invalid request"}, status=400)

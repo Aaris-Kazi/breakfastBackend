@@ -30,4 +30,5 @@ RUN python manage.py makemigrations && \
 
 EXPOSE 80
 
-CMD ["gunicorn", "naraBackend.wsgi:application", "--bind", "0.0.0.0:80"]
+# CMD ["gunicorn", "naraBackend.wsgi:application", "--bind", "0.0.0.0:80"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "80", "naraBackend.asgi:application"]

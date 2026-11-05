@@ -8,9 +8,11 @@ from django.db import transaction
 from django.utils import timezone
 from decimal import Decimal
 from datetime import timedelta
-from constants import AppConstants
+from constants.AppConstants import AppConstants
 import logging
 
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 class OrderCartService:
 
@@ -116,7 +118,7 @@ class OrderCartService:
                 .order_by("id")
             }
 
-            subtotal = Decimal(AppConstants.DEFAULT_DELIVERY_FEE)
+            subtotal = Decimal(AppConstants.DEFAULT_DELIVERY_FEE.value)
 
             for item in cartItem:
                 product = products.get(item.product_id)
@@ -237,3 +239,15 @@ class OrderCartService:
             self.logger.error(
                 f"Validation OrderModel does not exist for {e.args[0]}")
             raise ValidationError(f"Validation OrderModel due to :: {e.args[0]}")
+
+    def notify_cart_updated(self, user_id, cart_data):
+        self.logger.info(f"Notifying cart update for user {user_id} with data: {cart_data}")
+        channel_layer = get_channel_layer()
+
+        async_to_sync(channel_layer.group_send)(
+            f"cart_{user_id}",
+            {
+                "type": "cart.updated",
+                "data": cart_data
+            }
+        )

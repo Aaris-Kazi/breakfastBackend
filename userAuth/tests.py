@@ -1,5 +1,6 @@
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
+from asgiref.sync import async_to_sync
 from django.test import SimpleTestCase
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
@@ -7,6 +8,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from .authentication import AppJWTAuthentication
 from .models import UsersModels
+from .websocket_auth import JWTAuthMiddleware
 
 
 def make_token(**claims) -> AccessToken:
@@ -52,3 +54,39 @@ class AppJWTAuthenticationTests(SimpleTestCase):
 
         self.assertIs(authenticated_user, legacy_user)
         get_user.assert_called_once()
+
+
+class JWTAuthMiddlewareTests(SimpleTestCase):
+    def test_extracts_bearer_token(self):
+        self.assertEqual(
+            JWTAuthMiddleware._get_token(
+                {"headers": [(b"authorization", b"Bearer access-token")]}
+            ),
+            "access-token",
+        )
+
+    def test_extracts_query_token_for_browser_clients(self):
+        self.assertEqual(
+            JWTAuthMiddleware._get_token(
+                {"query_string": b"access_token=browser-token"}
+            ),
+            "browser-token",
+        )
+
+    def test_injects_authenticated_user_into_websocket_scope(self):
+        authenticated_user = object()
+        application = AsyncMock()
+        middleware = JWTAuthMiddleware(application)
+        scope = {"type": "websocket", "query_string": b"access_token=test-token"}
+
+        with patch.object(
+            JWTAuthMiddleware,
+            "get_user",
+            new=AsyncMock(return_value=authenticated_user),
+        ) as get_user:
+            async_to_sync(middleware)(scope, AsyncMock(), AsyncMock())
+
+        forwarded_scope = application.await_args.args[0]
+        self.assertIs(forwarded_scope["user"], authenticated_user)
+        self.assertNotIn("user", scope)
+        get_user.assert_awaited_once_with("test-token")

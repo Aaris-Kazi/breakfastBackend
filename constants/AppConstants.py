@@ -4,7 +4,7 @@ from .AppEnums import AppEnums
 
 
 class AppConstants(Enum):
-    DEFAULT_DELIVERY_FEE = Configurations.get_configurations("DEFAULT_DELIVERY_FEE", AppEnums.DEFAULT_DELIVERY_FEE)
+    DEFAULT_DELIVERY_FEE = int(Configurations.get_configurations("DEFAULT_DELIVERY_FEE", AppEnums.DEFAULT_DELIVERY_FEE.value))
     HOSTNAME = Configurations.get_configurations("HOST", "localhost")
     DB_NAME = Configurations.get_configurations("DELIVERY_DATABASE", "deliveryApp")
     USERNAME = Configurations.get_configurations("USERNAME", "aaris")
@@ -14,3 +14,4 @@ class AppConstants(Enum):
     REFRESH_TOKEN_DAYS = Configurations.get_configurations("TOKEN_DAYS", 7)
     SECRETS = Configurations.get_configurations("SECRETS", "thisisthesecret while building the application")
     DEBUG = Configurations.get_configurations("DEBUGs", "N") == "Y"
+    REDIS_URL = Configurations.get_configurations("REDIS_URL", "redis://192.168.0.107:6379/0")
