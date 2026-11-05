@@ -22,7 +22,6 @@ class CartConsumer(AsyncWebsocketConsumer):
             log.info(f"WebSocket connection received for user: {self.user}")
             log.info(f"WebSocket connection received for user: {self.user.id}")
             await self.accept()
-            await asyncio.sleep(5)  # Optional: Wait for a moment before sending the message
             await self.send(text_data="Connected successfully!")
         except Exception as e:
             log.error(f"Error during WebSocket connection: {e}")
