@@ -1,12 +1,12 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
 from django.http import JsonResponse
-from .prodAndCatSerializer import CategoriesSerializer, ProductSerializer
+from .prodAndCatSerializer import CategoriesSerializer, ProductSerializer, CategoriesUpdateSerializer
 from .ProdAndCatService import ProdAndCatService
 import logging
 
 service = ProdAndCatService()
-logger = logging.Logger(__name__)
+logger = logging.getLogger(__name__)
 
 class CategoriesViewset(ViewSet):
 
@@ -22,6 +22,7 @@ class CategoriesViewset(ViewSet):
             logger.error(f"Serializer error in Creating Categories due to {serializer.error_messages}")
             return JsonResponse({"msg": serializer.errors}, status=400)
         except Exception as e:
+            logger.error(f"Create categoery exception due to :: {e.args[1]}")
             return JsonResponse({"msg": str(e)}, status=400)
 
     def list(self, request: Request):
@@ -29,6 +30,22 @@ class CategoriesViewset(ViewSet):
         serializer = CategoriesSerializer(categories, many=True)
 
         return JsonResponse({"data": serializer.data})
+
+    def update(self, request: Request, pk:str):
+        try:
+            data = request.data
+            serializer = CategoriesUpdateSerializer(data=data)
+            if not serializer.is_valid():
+                logger.error(f"Serializer error in Updating Categories due to {serializer.error_messages}")
+                return JsonResponse({"msg": serializer.errors}, status=400)
+            
+
+            
+            service.updateCategory(pk, serializer.validated_data)
+            return JsonResponse({"msg": "success"}, status=201)
+        except Exception as e:
+            logger.error(f"update category exception due to :: {e.args[0]}")
+            return JsonResponse({"status": "failed", "msg": e.args[0]}, status = 500)
 
 
 
@@ -46,6 +63,7 @@ class ProductViewset(ViewSet):
             logger.error(f"Serializer error in Creating Product due to {serializer.error_messages}")
             return JsonResponse({"msg": serializer.errors}, status=400)
         except Exception as e:
+            logger.error(f"Create categoery exception due to :: {e.args[1]}")
             return JsonResponse({"msg": str(e)}, status=400)
 
     def update(self, request: Request, pk: int):
@@ -61,6 +79,7 @@ class ProductViewset(ViewSet):
             logger.error(f"Serializer error in Updating Product due to {serializer.error_messages}")
             return JsonResponse({"msg": serializer.errors}, status=400)
         except Exception as e:
+            logger.error(f"Create categoery exception due to :: {e.args[1]}")
             return JsonResponse({"msg": str(e)}, status=400)
 
 

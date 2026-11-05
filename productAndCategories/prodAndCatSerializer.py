@@ -13,7 +13,8 @@ class CategoriesSerializer(Serializer):
         return CategoriesModel.objects.create(
             **validated_data
         )
-
+class CategoriesUpdateSerializer(Serializer):
+    is_active = BooleanField(default=True)
 
 class ProductSerializer(Serializer):
     id = IntegerField(required=False)

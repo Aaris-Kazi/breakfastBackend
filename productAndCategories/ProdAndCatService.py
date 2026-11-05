@@ -1,4 +1,7 @@
 from .models import CategoriesModel, ProductModel
+import logging
+
+log = logging.getLogger(__name__)
 
 class ProdAndCatService:
 
@@ -10,6 +13,16 @@ class ProdAndCatService:
 
     def createCategory(self, data: dict):
         pass
+
+    def updateCategory(self, name:str, data: dict):
+        try:
+            catModel = CategoriesModel.objects.get(name=name)
+            catModel.is_active = data.get("is_active")
+            catModel.save()
+        except Exception as e:
+            log.error(f"Exception occured during updating the category due to {e.args[0]}")
+            
+            raise e
 
 
     def getCategory(self):
