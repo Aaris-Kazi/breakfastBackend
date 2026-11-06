@@ -28,7 +28,7 @@ SECRET_KEY = AppConstants.SECRETS.value
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = AppConstants.DEBUG.value
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*", "localhost", "network"]
 
 # Application definition
 
