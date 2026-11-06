@@ -77,8 +77,9 @@ class CartViewset(ViewSet):
 
             if cart_serializer.is_valid():
                 data = cart_serializer.validated_data
-                cart = service.createCart(data, request.user)
-                return JsonResponse({"msg": "success", "cart_id": cart.id})
+                cart, cartItem = service.createCart(data, request.user)
+                service.notify_cart_size(request.user.id, service.get_cart_size(cart.id))
+                return JsonResponse({"msg": "success", "cart_id": cartItem.id})
             
             logger.error(f"serializer update error due to {cart_serializer.error_messages} ")
             return JsonResponse({"msg": "invalid request"}, status=400)
@@ -116,7 +117,8 @@ class CartViewset(ViewSet):
 
     def delete(self, request: Request, pk: int):
         try:
-            service.deleteCart(request.user, pk)
+            service.deleteCart(request.user, int(pk))
+            # service.notify_cart_size(request.user.id, service.get_cart_size(cart.id))
             return JsonResponse({"msg": "success"})
         except Exception as e:
             logger.error(f"Exception occured in delete due to {e.args[0]}")

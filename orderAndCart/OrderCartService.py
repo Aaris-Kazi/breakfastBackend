@@ -21,11 +21,19 @@ class OrderCartService:
     @transaction.atomic
     def createCart(self, data: dict, username):
         cart = CartModel.objects.get_or_create(users = UsersModels.objects.get(id = username.id) , status=CartModel.CartStatus.ACTIVE)[0]
-        return CartItemModel.objects.create(
+        cartItem = CartItemModel.objects.create(
             cart=cart,
             product=ProductModel.objects.get(id=data.get('product_id')),
             quantity=data.get('quantity'),
         )
+
+        return cart, cartItem
+
+    def get_cart_size(self, cart_id):
+
+        return CartItemModel.objects.filter(
+            cart_id=cart_id
+        ).count()
 
     def getCart(self, username: str):
         return CartItemModel.objects.filter(
@@ -78,6 +86,7 @@ class OrderCartService:
                 product__id=pk
             )
             cart.delete()
+            return cart
         except Exception as e:
             self.logger.error(f" Exception occured in {e.args[0]}")
             raise e
@@ -249,5 +258,17 @@ class OrderCartService:
             {
                 "type": "cart.updated",
                 "data": cart_data
+            }
+        )
+
+    def notify_cart_size(self, user_id, size: int):
+        self.logger.info(f"Notifying cart size update for user {user_id} with size: {size}")
+        channel_layer = get_channel_layer()
+
+        async_to_sync(channel_layer.group_send)(
+            f"cart_{user_id}",
+            {
+                "type": "cart.size.updated",
+                "data": size
             }
         )
