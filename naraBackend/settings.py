@@ -28,12 +28,13 @@ SECRET_KEY = AppConstants.SECRETS.value
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = AppConstants.DEBUG.value
 
-ALLOWED_HOSTS = ["*", "localhost", "network"]
+ALLOWED_HOSTS = ["*", "localhost", "network", "192.168.0.107", "http://localhost:5173", "http://192.168.0.107:5173"]
 
 # Application definition
 
 INSTALLED_APPS = [
     "daphne",
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
