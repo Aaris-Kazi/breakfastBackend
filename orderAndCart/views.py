@@ -21,7 +21,8 @@ class OrderViewset(ViewSet):
             serializer = OrderSerializer(data=request.data)
 
             if serializer.is_valid():
-                service.createOrder(request.user, serializer.validated_data)
+                order, cart = service.createOrder(request.user, serializer.validated_data)
+                service.notify_cart_size(request.user.id, service.get_cart_size(cart.id))
                 return JsonResponse({"msg": "success"})
 
             logger.error(

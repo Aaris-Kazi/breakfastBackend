@@ -188,7 +188,7 @@ class OrderCartService:
             cart.status = CartModel.CartStatus.CONVERTED
             cart.save(update_fields=["status", "updated_at"])
 
-            return order
+            return order, cart
 
         except CartModel.DoesNotExist:
             self.logger.error(
