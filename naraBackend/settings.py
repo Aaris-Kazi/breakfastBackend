@@ -28,7 +28,13 @@ SECRET_KEY = AppConstants.SECRETS.value
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = AppConstants.DEBUG.value
 
-ALLOWED_HOSTS = ["*", "localhost", "network", "192.168.0.107", "http://localhost:5173", "http://192.168.0.107:5173"]
+ALLOWED_HOSTS = ["*", "localhost", "network", "192.168.0.107"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://localhost",
+    "http://192.168.0.107:5173",
+]
 
 # Application definition
 
