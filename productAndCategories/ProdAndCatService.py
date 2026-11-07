@@ -35,3 +35,6 @@ class ProdAndCatService:
 
     def getProduct(self):
         return self.product_model.objects.all()
+
+    def getProductByCategory(self, category_name: str):
+        return self.product_model.objects.filter(category__name=category_name)

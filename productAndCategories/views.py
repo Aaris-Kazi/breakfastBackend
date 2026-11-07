@@ -88,3 +88,9 @@ class ProductViewset(ViewSet):
         serializer = ProductSerializer(products, many=True)
 
         return JsonResponse({"data": serializer.data})
+    
+    def retrieve(self, request: Request, pk: int):
+        products = service.getProductByCategory(pk)
+        serializer = ProductSerializer(products, many=True)
+
+        return JsonResponse({"data": serializer.data})
