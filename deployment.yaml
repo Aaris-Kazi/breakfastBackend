@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: breakfast-app-service
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: breakfast-app
+
+  template:
+    metadata:
+      labels:
+        app: breakfast-app
+
+    spec:
+      containers:
+        - name: breakfast-app
+          image: aariskazi/breakfast-app:v19
+          imagePullPolicy: Never
+
+          envFrom:
+            - configMapRef:
+                name: breakfast
+
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: breakfast-app-service
+
+spec:
+  selector:
+    app: breakfast-app
+
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30080 
+
+  type: NodePort
