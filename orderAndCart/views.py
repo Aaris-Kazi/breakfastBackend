@@ -7,6 +7,7 @@ from .OrderCartService import OrderCartService
 from .orderCartSerial import OrderSerializer, CartSerializer, CartResponseSerializer, CartUpdateSerializer, OrderItemResponseSerializer, OrderResponseSerializer, OrderUpdateSerializer
 from rest_framework.permissions import IsAuthenticated
 import logging
+from utils.permissionClasses import IsCustomer
 # Create your views here.
 
 service = OrderCartService()
@@ -14,7 +15,12 @@ logger = logging.getLogger(__name__)
 
 
 class OrderViewset(ViewSet):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    def get_permissions(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            return [IsCustomer()]
+    
+        return [IsAuthenticated()]
 
     def create(self, request: Request):
         try:
@@ -70,7 +76,12 @@ class OrderViewset(ViewSet):
 
 class CartViewset(ViewSet):
 
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    def get_permissions(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            return [IsCustomer()]
+        
+        return [IsAuthenticated()]
 
     def create(self, request: Request):
         try:
