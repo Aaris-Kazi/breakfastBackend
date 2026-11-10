@@ -18,7 +18,7 @@ class CartUpdateSerializer(Serializer):
 
 
 class CartResponseSerializer(Serializer):
-    cart = CartItemSerializer()
+    # cart = CartItemSerializer()
     product = ProductSerializer()
     quantity = IntegerField(required=False)
 

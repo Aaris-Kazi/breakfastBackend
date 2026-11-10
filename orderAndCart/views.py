@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from rest_framework.request import Request
 
 from .OrderCartService import OrderCartService
-from .orderCartSerial import OrderSerializer, CartSerializer, CartResponseSerializer, CartUpdateSerializer, OrderItemResponseSerializer, OrderResponseSerializer, OrderUpdateSerializer
+from .orderCartSerial import CartItemSerializer, OrderSerializer, CartSerializer, CartResponseSerializer, CartUpdateSerializer, OrderItemResponseSerializer, OrderResponseSerializer, OrderUpdateSerializer
 from rest_framework.permissions import IsAuthenticated
 import logging
 from utils.permissionClasses import IsCustomer
@@ -104,11 +104,14 @@ class CartViewset(ViewSet):
 
     def list(self, request: Request):
         model = service.getCart(request.user)
+        cart = CartItemSerializer(model[0].cart)
         response = CartResponseSerializer(
             model,
             many=True
         )
-        return JsonResponse({"data": response.data})
+        resp = cart.data
+        resp.update({"productList": response.data})
+        return JsonResponse(resp)
 
     def update(self, request: Request, pk: int):
 
