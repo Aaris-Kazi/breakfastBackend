@@ -1,2 +1,5 @@
 Readme.md
-snapshots
+snapshots/
+Jenkinsfile
+deployment.yaml
+configBf.yaml
