@@ -104,7 +104,7 @@ class CartViewset(ViewSet):
 
     def list(self, request: Request):
         model = service.getCart(request.user)
-        cart = CartItemSerializer(model[0].cart)
+        cart = CartItemSerializer( model[0].cart if len(model) > 0 else model.first())
         response = CartResponseSerializer(
             model,
             many=True
