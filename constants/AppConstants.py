@@ -14,4 +14,4 @@ class AppConstants(Enum):
     REFRESH_TOKEN_DAYS = Configurations.get_configurations("TOKEN_DAYS", 7)
     SECRETS = Configurations.get_configurations("SECRETS", "thisisthesecret while building the application")
     DEBUG = Configurations.get_configurations("DEBUGs", "N") == "Y"
-    REDIS_URL = Configurations.get_configurations("REDIS_URL", "redis://192.168.0.107:6379/0")
+    REDIS_URL = Configurations.get_configurations("REDIS_URL", "redis://192.168.0.108:6379/0")
