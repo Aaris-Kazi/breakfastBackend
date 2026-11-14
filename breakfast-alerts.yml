@@ -1,0 +1,49 @@
+
+groups:
+  - name: breakfast-alerts
+    rules:
+
+      # 1. Health endpoint is down
+      - alert: BreakfastHealthCheckFailed
+        expr: probe_success{job="breakfast-health"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Breakfast API is down"
+          description: "The Breakfast /health/ endpoint has failed for more than one minute."
+
+      # 2. Django metrics endpoint is unavailable
+      - alert: BreakfastDjangoMetricsUnavailable
+        expr: up{job="breakfast-django"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Django metrics unavailable"
+          description: "Prometheus cannot scrape the Breakfast Django /metrics endpoint."
+
+      # 3. High API response latency
+      - alert: BreakfastHighResponseLatency
+        expr: histogram_quantile(0.95, sum by (le) (rate(django_http_requests_latency_including_middlewares_seconds_bucket[5m]))) > 1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Django API latency"
+          description: "95th percentile Django request latency has exceeded one second."
+
+      # 4. High HTTP error rate
+      - alert: BreakfastHighErrorRate
+        expr: |
+          (
+            sum(rate(django_http_responses_total_by_status_view_method[5m]))
+            and
+            sum(rate(django_http_responses_total_by_status_view_method[5m]))
+          ) > 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Breakfast API errors detected"
+          description: "Django HTTP response metrics indicate application errors. Review status-code metrics."
